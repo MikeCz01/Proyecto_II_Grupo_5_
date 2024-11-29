@@ -10,6 +10,8 @@ document.getElementById('configForm').addEventListener('submit', function (event
         window.location.href = `simuladorNRU.html?procesos=${numProcesos}&marcos=${numMarcos}`;
     }else if(algoritmo === 'reloj'){
         window.location.href = `simuladorReloj.html?procesos=${numProcesos}&marcos=${numMarcos}`;
+    }else if(algoritmo === 'fifo'){
+        window.location.href = `vistaFIFO.html?procesos=${numProcesos}&marcos=${numMarcos}`;
     }
     else {
         alert('Seleccione un algoritmo');
