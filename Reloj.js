@@ -1,32 +1,32 @@
-// Parámetros iniciales
-const numProcesos = 4; // Número de procesos simulados
-const numMarcos = 4;   // Número de marcos en memoria física
 
-// Configuración inicial: Cada programa utiliza 1 página
+const numProcesos = 4; 
+const numMarcos = 4;   
+
+
 let programas = Array.from({ length: numProcesos }, (_, i) => ({
-    id: `P${i + 1}`,       // Identificador del programa
-    memoria: 1,            // Cada programa ocupa 1 página
-    usada: false,          // No usado inicialmente
-    fallos: 0              // Contador de fallos
+    id: `P${i + 1}`,       
+    memoria: 1,            
+    usada: false,          
+    fallos: 0             
 }));
 
 let memoriaFisica = Array.from({ length: numMarcos }, () => ({
-    id: null,       // Sin programa asignado inicialmente
-    pagina: null,   // Sin página asignada
-    usada: false,   // Bit de uso
+    id: null,       
+    pagina: null,   
+    usada: false,   
 }));
 
-let punteroReloj = 0; // Puntero del algoritmo de reloj
-let intervalo;        // Intervalo de simulación
+let punteroReloj = 0;
+let intervalo;        
 
-// Referencias HTML
+
 const logArea = document.getElementById('logArea');
 const framesContainer = document.getElementById('frames');
 const programList = document.getElementById('programList');
 const memoryInputsContainer = document.getElementById('memoryInputs');
 const pageFaultsTable = document.getElementById('pageFaultsTable').querySelector('tbody');
 
-// Actualizar lista de programas
+
 function actualizarProgramas() {
     programList.innerHTML = '';
     programas.forEach(programa => {
@@ -38,7 +38,7 @@ function actualizarProgramas() {
     });
 }
 
-// Actualizar memoria física
+
 function actualizarMemoria() {
     framesContainer.innerHTML = '';
     memoriaFisica.forEach((frame, index) => {
@@ -52,7 +52,7 @@ function actualizarMemoria() {
     });
 }
 
-// Registrar un fallo de página en la tabla
+
 function registrarFallo(programa, pagina, estado) {
     const row = document.createElement('tr');
     row.innerHTML = `
@@ -64,12 +64,12 @@ function registrarFallo(programa, pagina, estado) {
     pageFaultsTable.appendChild(row);
 }
 
-// Algoritmo de reemplazo de Reloj
+
 function algoritmoReloj(programa, pagina) {
     while (true) {
         let frame = memoriaFisica[punteroReloj];
 
-        // Si el bit de uso es 0, reemplazar
+        
         if (!frame.usada) {
             frame.id = programa.id;
             frame.pagina = pagina;
@@ -80,27 +80,26 @@ function algoritmoReloj(programa, pagina) {
             return;
         }
 
-        // Si el bit de uso es 1, se limpia y avanza el puntero
+
         frame.usada = false;
         punteroReloj = (punteroReloj + 1) % numMarcos;
     }
 }
 
-// Simulación del acceso a páginas
 function accederAPagina(programa, pagina) {
     const frame = memoriaFisica.find(f => f.id === programa.id && f.pagina === pagina);
 
     if (frame) {
-        frame.usada = true; // Actualizar bit de uso
+        frame.usada = true; 
         registrarFallo(programa, pagina, 'Sin fallo');
     } else {
-        algoritmoReloj(programa, pagina); // Aplicar algoritmo de reemplazo
+        algoritmoReloj(programa, pagina); 
     }
 
     actualizarMemoria();
 }
 
-// Simulación paso a paso
+
 function iniciarSimulacion() {
     reiniciarSimulacion();
 
@@ -112,14 +111,14 @@ function iniciarSimulacion() {
             return;
         }
 
-        const pagina = Math.ceil(Math.random() * programa.memoria); // Página aleatoria
+        const pagina = Math.ceil(Math.random() * programa.memoria); 
         accederAPagina(programa, pagina);
 
         programa.usada = true;
     }, 2000);
 }
 
-// Reiniciar simulación
+
 function reiniciarSimulacion() {
     programas.forEach(p => (p.usada = false));
     memoriaFisica.forEach(f => {
@@ -134,13 +133,13 @@ function reiniciarSimulacion() {
     actualizarMemoria();
 }
 
-// Detener simulación
+
 function pararSimulacion() {
     clearInterval(intervalo);
     logArea.innerHTML += 'Simulación detenida.<br>';
 }
 
-// Inicializar
+
 actualizarProgramas();
 actualizarMemoria();
 document.getElementById('startSimulation').addEventListener('click', iniciarSimulacion);

@@ -1,7 +1,7 @@
 document.getElementById('configForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
-    // Capturar valores del formulario
+ 
     const numProcesos = parseInt(document.getElementById('numProcesos').value);
     const numMarcos = parseInt(document.getElementById('numMarcos').value);
     const algoritmo = document.getElementById('algoritmo').value;

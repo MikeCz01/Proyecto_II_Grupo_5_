@@ -1,4 +1,4 @@
-/* Estilos generales */
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
@@ -83,7 +83,7 @@ button {
     background-color: lightcoral;
 }
 
-/* Estilos para la selección de memoria utilizada por cada programa */
+
 #programMemorySelection {
     margin-top: 20px;
     padding: 10px;
