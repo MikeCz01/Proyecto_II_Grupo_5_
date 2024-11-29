@@ -1,0 +1,32 @@
+.page-footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding-top: 5px;
+    max-height: 40px !important;
+    padding-bottom: 5px;
+    background-color: rgb(64, 64, 64);
+    color: white;
+    text-align: center;
+    align-content: center;
+}
+
+.page-nav{
+    background-color: rgb(43, 38, 38);
+}
+
+.page-nav-content{
+    color: white !important;
+    transition: 0.3s;
+}
+
+.page-nav-content:hover{
+    filter: opacity(60%);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.page-icon{
+    font-size: 24px;
+}

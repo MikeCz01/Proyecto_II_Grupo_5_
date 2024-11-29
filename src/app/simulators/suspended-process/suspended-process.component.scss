@@ -1,0 +1,13 @@
+.table > tbody > tr > td,
+.table > thead > tr > th {
+    vertical-align: middle;
+}
+
+.show-quantum{
+    transition: all .5s;
+}
+
+.hide-quantum{
+    color:rgba(255, 255, 255, 0);
+    transition: all .5s;
+}

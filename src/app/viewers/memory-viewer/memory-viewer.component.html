@@ -1,0 +1,68 @@
+<div class="modal-header" *ngIf="isModal">
+    <h4
+        class="modal-title"
+        id="modal-title"
+        (click)="modal.dismiss('Cross click')">
+        Ver Tabla de Páginas
+    </h4>
+</div>
+<div [ngClass]="{'modal-body' : isModal}">
+    <div class="row text-center">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm memory-table" *ngIf="memory.length > 0; else not_memory">
+                    <thead>
+                        <tr>
+                            <th>Marco</th>
+                            <th [attr.colspan]="FRAME_SIZE">Espacio</th>
+                            <ng-container *ngIf="isExtended">
+                                <th>Proceso</th>
+                                <th>Estado</th>
+                            </ng-container>
+                            <th>Marco</th>
+                            <th [attr.colspan]="FRAME_SIZE">Espacio</th>
+                            <ng-container *ngIf="isExtended">
+                                <th>Proceso</th>
+                                <th>Estado</th>
+                            </ng-container>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let frames of memoryMap()">
+                            <ng-container *ngFor="let frame of frames">
+                                <td [title]="getTitle(frame)"> {{ frame.id }} </td>
+                                <td *ngFor="let idx of FRAMES" [title]="getTitle(frame)"
+                                    [class]="getCellClass(frame, idx)" [style]="getOpacity(frame)" 
+                                    class="frame">
+                                    {{ getContent(frame, idx) }}
+                                </td>
+                                <ng-container [ngSwitch]="frame.process" *ngIf="isExtended">
+                                    <td [title]="getTitle(frame)" colspan="2" *ngSwitchCase="ASSIGNATIONS.SO">S.O.</td>
+                                    <td [title]="getTitle(frame)" colspan="2" *ngSwitchCase="ASSIGNATIONS.FREE">LIBRE</td>
+                                    <td [title]="getTitle(frame)" *ngSwitchDefault>#{{ frame.process }} </td>
+                                </ng-container>
+                                <td *ngIf="isExtended && (frame.process != ASSIGNATIONS.FREE && frame.process != ASSIGNATIONS.SO)"
+                                [title]="getTitle(frame)">
+                                    {{ frame.status }}
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+            
+                <span class="mr-3"><i class="fas fa-circle so-frame-icon mr-1"></i>Sistema operativo</span> 
+                <span class="mr-3"><i class="fas fa-circle free-frame-icon mr-1"></i>Libre</span> <br>
+                <span class="mr-3"><i class="fas fa-circle ready-frame-icon mr-1"></i>Listo</span> 
+                <span class="mr-3"><i class="fas fa-circle executing-frame-icon mr-1"></i>Ejecutandose</span>  
+                <span class="mr-3"><i class="fas fa-circle blocked-frame-icon mr-1"></i>Bloqueado</span> 
+            
+                <ng-template #not_memory>
+                    No hay memoria
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer" *ngIf="isModal">
+    Presione <kbd>"C"</kbd> para continuar
+</div>

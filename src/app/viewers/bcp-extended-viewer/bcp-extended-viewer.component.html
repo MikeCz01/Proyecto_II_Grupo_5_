@@ -1,0 +1,135 @@
+<div class="modal-header">
+    <h4
+        class="modal-title"
+        id="modal-title"
+        (click)="modal.dismiss('Cross click')">
+        Ver BCPs - Resumen de ejecución de procesos
+    </h4>
+    <!-- <button
+        type="button"
+        class="btn-close"
+        aria-label="Close button"
+        aria-describedby="modal-title"
+    ></button> -->
+</div>
+<div class="modal-body">
+    <div class="row text-center">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table
+                    class="table table-bordered table-sm"
+                    *ngIf="bcps.length > 0; else not_bcp"
+                >
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Estado</th>
+                            <th>Operación</th>
+                            <th *ngIf="isBCPMemory()">Tamaño</th>
+                            <th>Resultado</th>
+                            <th>T. Estimado</th>
+                            <th>T. Llegada</th>
+                            <th>T. Finalización</th>
+                            <th>T. Retorno</th>
+                            <th>T. Respuesta</th>
+                            <th>T. Restante CPU</th>
+                            <th>T. Espera</th>
+                            <th>T. Servicio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let bcp of bcps">
+                            <td>{{ bcp.programId }}</td>
+
+
+                            <td>
+                                <i [class]="getIcon(bcp.status || '')"></i>
+                                <br>
+                                {{ bcp.status }}
+                            </td>
+                            
+                            
+                            <td>
+                                {{ bcp.operator1 }}
+                                {{ bcp.operation }} 
+                                {{ bcp.operator2 }}
+                            </td>
+
+                            <td *ngIf="isBCPMemory()">
+                                {{ instanceofBCPMemory(bcp) ? bcp.memoryUsed : '' }}
+                            </td>
+
+                            <td *ngIf="isValid(bcp.result)">
+                                {{ bcp.result | number:'1.0-3' }}
+                            </td>
+                            <td *ngIf="!isValid(bcp.result) && !isValid(bcp.finishTime)">
+                                -
+                            </td>
+                            <td *ngIf="!isValid(bcp.result) && isValid(bcp.finishTime)">
+                                ERROR
+                                <i class="fas fa-exclamation text-danger ml-2"></i>
+                            </td>
+
+
+                            <td>{{ bcp.maximumTime }}</td>
+                            
+
+                            <td>
+                                {{ isValid(bcp.startTime)? bcp.startTime : '-' }}
+                            </td>
+                            
+
+                            <td>
+                                {{ isValid(bcp.finishTime) ? bcp.finishTime : '-' }}
+                            </td>
+                            
+
+                            <td>
+                                {{ isValid(bcp.returnTime) ? bcp.returnTime : '-'}}
+                            </td>
+                            
+
+                            <td *ngIf="isValid(bcp.responseTime)">
+                                {{ bcp.responseTime! - bcp.startTime! }}
+                            </td>
+                            <td *ngIf="!isValid(bcp.responseTime)">
+                                -
+                            </td>
+
+
+                            <td *ngIf="(!isValid(bcp.finishTime) && isValid(bcp.startTime)) || (isValid(bcp.finishTime) && isValid(bcp.result))">
+                                {{ bcp.maximumTime - bcp.elapsedTime }}
+                            </td>
+                            <td *ngIf="!isValid(bcp.finishTime) && !isValid(bcp.startTime)">
+                                - 
+                            </td>
+                            <td *ngIf="isValid(bcp.finishTime) && !isValid(bcp.result)">
+                                ERROR ({{ bcp.maximumTime - bcp.elapsedTime }})
+                            </td>
+
+
+                            <td>
+                                {{ isValid(bcp.waitTime) ? bcp.waitTime : '-' }}
+                            </td>
+
+                            
+                            <td *ngIf="isValid(bcp.returnTime)">
+                                {{ bcp.returnTime! - bcp.waitTime! }}
+                            </td>
+                            <td *ngIf="!isValid(bcp.returnTime) && !isValid(bcp.startTime)">
+                                -
+                            </td>
+                            <td *ngIf="!isValid(bcp.returnTime) && isValid(bcp.startTime)">
+                                {{ bcp.elapsedTime }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ng-template #not_bcp>No hay información de los procesos</ng-template>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    Presione <kbd>"C"</kbd> para continuar
+</div>
