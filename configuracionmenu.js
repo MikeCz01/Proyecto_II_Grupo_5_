@@ -7,11 +7,11 @@ document.getElementById('configForm').addEventListener('submit', function (event
     const algoritmo = document.getElementById('algoritmo').value;
 
     if (algoritmo === 'nru') {
-        window.location.href = `simulador.html?procesos=${numProcesos}&marcos=${numMarcos}`;
+        window.location.href = `simuladorNRU.html?procesos=${numProcesos}&marcos=${numMarcos}`;
     }else if(algoritmo === 'reloj'){
-        window.location.href = `simuladorreloj.html?procesos=${numProcesos}&marcos=${numMarcos}`;
+        window.location.href = `simuladorReloj.html?procesos=${numProcesos}&marcos=${numMarcos}`;
     }
     else {
-        alert('Solo se ha implementado el algoritmo NRU en esta simulación.');
+        alert('Seleccione un algoritmo');
     }
 });
