@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador MMU - Algoritmo de Reloj</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <div id="menu" class="mb-3">
+            <button id="startSimulation" class="btn btn-primary">Iniciar Simulación</button>
+            <button id="stopSimulation" class="btn btn-danger">Parar Simulación</button>
+            <button id="resetSimulation" class="btn btn-warning">Reiniciar</button>
+        </div>
+
+        <div id="programs" class="mb-4">
+            <h2>Programas en ejecución:</h2>
+            <div id="programMemorySelection">
+                <h3>Seleccionar memoria utilizada por cada programa:</h3>
+                <div id="memoryInputs"></div>
+            </div>
+            <div id="programList"></div>
+        </div>
+
+        <div id="memory" class="mb-4">
+            <h2>Memoria Física</h2>
+            <div id="frames" class="d-flex flex-wrap"></div>
+        </div>
+
+        <div id="logs" class="mb-4">
+            <h2>Logs</h2>
+            <div id="logArea" class="border p-2" style="height: 150px; overflow-y: scroll;"></div>
+        </div>
+
+        <div id="pageFaults" class="mb-4">
+            <h2>Fallos de Página</h2>
+            <table id="pageFaultsTable" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Programa</th>
+                        <th>Página</th>
+                        <th>Memoria Física</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los resultados se añadirán dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="Reloj.js"></script>
+</body>
+</html>

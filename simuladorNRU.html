@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador MMU con NRU</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="menu">
+        <button id="startSimulation" class="btn btn-primary">Iniciar Simulación</button>
+        <button id="stopSimulation" class="btn btn-danger">Parar Simulación</button>
+        <button id="resetSimulation" class="btn btn-warning">Reiniciar</button>
+    </div>
+
+    <div id="programs">
+        <h2>Programas en ejecución:</h2>
+        <div id="programMemorySelection">
+            <h3>Seleccionar memoria utilizada por cada programa:</h3>
+            <div id="memoryInputs"></div>
+        </div>
+        <div id="programList"></div>
+    </div>
+
+    <div id="memory">
+        <h2>Memoria Física</h2>
+        <div id="frames"></div>
+    </div>
+    <div id="pageFaults">
+        <h2>Fallos de Página</h2>
+        <table id="pageFaultsTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Programa</th>
+                    <th>Página</th>
+                    <th>Memoria Física</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los fallos de página se añadirán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+    
+    <div id="logs">
+        <h2>Logs</h2>
+        <div id="logArea"></div>
+    </div>
+
+    <!-- Incluir JS de Bootstrap -->
+    
+    <script src="NRU.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,128 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+#menu {
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+#programs, #memory, #logs {
+    width: 80%;
+    margin-bottom: 30px;
+}
+
+#programList, #frames {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.frame, .program {
+    padding: 10px;
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    background-color: lightgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.active {
+    background-color: #4caf50;
+    color: white;
+}
+
+.inactive {
+    background-color: #f44336;
+    color: white;
+}
+
+#logArea {
+    width: 100%;
+    height: 150px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #fff;
+}
+
+.program {
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #000;
+    display: inline-block;
+}
+
+.frame {
+    padding: 10px;
+    margin: 10px;
+    border: 2px solid #000;
+    display: inline-block;
+}
+
+.active {
+    background-color: lightgreen;
+}
+
+.inactive {
+    background-color: lightcoral;
+}
+
+/* Estilos para la selección de memoria utilizada por cada programa */
+#programMemorySelection {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.memory-control {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.memory-control label {
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.memory-control input {
+    padding: 5px;
+    font-size: 16px;
+    width: 60px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
