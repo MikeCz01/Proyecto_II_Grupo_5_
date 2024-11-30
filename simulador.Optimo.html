@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulación de Ejecución de Programas</title>
+  <link rel="stylesheet" href="Optimo.css">
+</head>
+<body>
+  <div id="programSection">
+    <h3>Agregar Programas</h3>
+    <button id="addProgram">Agregar Programa</button>
+    <ul id="programList"></ul>
+    <button id="startExecution" style="display: none;">Iniciar Ejecución</button>
+  </div>
+
+  <div id="resultSection" style="display: none;">
+    <h3>Resultados de la Ejecución</h3>
+    <table id="resultTable">
+        <thead>
+          <tr>
+            <th>Programa</th>
+            <th>Página</th>
+            <th>Memoria Física</th>
+            <th>Memoria Virtual</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div id="statistics">
+      <p>Fallos de Página: <span id="pageFaults">0</span></p>
+      <p>Tasa de Fallos: <span id="faultRate">0%</span></p>
+      <p>Rendimiento: <span id="performance">0%</span></p>
+    </div>
+  </div>
+
+  <script src="Optimo.js"></script>
+</body>
+</html>

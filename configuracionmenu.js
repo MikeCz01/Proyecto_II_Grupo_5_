@@ -12,8 +12,10 @@ document.getElementById('configForm').addEventListener('submit', function (event
         window.location.href = `simuladorReloj.html?procesos=${numProcesos}&marcos=${numMarcos}`;
     }else if(algoritmo === 'fifo'){
         window.location.href = `vistaFIFO.html?procesos=${numProcesos}&marcos=${numMarcos}`;
-    }
-    else {
-        alert('Seleccione un algoritmo');
-    }
+  
+} else if (algoritmo === 'optimo') {
+    window.location.href = `simulador.Optimo.html?procesos=${numProcesos}&marcos=${numMarcos}`;  // Redirige al simulador óptimo
+} else {
+    alert('Seleccione un algoritmo');
+}
 });

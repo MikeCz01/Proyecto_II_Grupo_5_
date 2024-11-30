@@ -1,0 +1,135 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  h2, h3 {
+    color: #333;
+  }
+  
+  h2 {
+    margin-top: 0;
+  }
+  
+  /* Estilo de las secciones */
+  #configSection, #programSection, #resultSection {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+  }
+  
+  #configSection h2, #programSection h3, #resultSection h3 {
+    text-align: center;
+  }
+  
+  /* Inputs y botones */
+  input[type="number"], button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Lista de programas */
+  #programList {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  #programList li {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Tabla de resultados */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  td {
+    background-color: #f9f9f9;
+  }
+  
+  td:first-child {
+    font-weight: bold;
+  }
+  
+  #statistics {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  /* Estilo para estadísticas */
+  #statistics p {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Memoria visual */
+  #virtualMemoryView, #physicalMemoryView {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .memory-block {
+    width: 60px;
+    height: 60px;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+  }
+  
+  .memory-block.filled {
+    background-color: #4CAF50;
+    color: white;
+  }
