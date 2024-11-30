@@ -1,211 +1,140 @@
-
-const params = new URLSearchParams(window.location.search);
-const numProcesos = parseInt(params.get('procesos')) || 4; 
-const numMarcos = parseInt(params.get('marcos')) || 4;
-
-
-let programas = Array.from({ length: numProcesos }, (_, i) => ({
-    id: `P${i + 1}`,                  
-    memoria: 1,                        
-    usada: false,                     
-    fallos: 0                          
-}));
-
-let memoriaFisica = Array.from({ length: numMarcos }, () => ({
-    id: null,    
-    pagina: null,  
-    usada: false  
-}));
-
-let intervalo; 
-
-
-let logArea = document.getElementById('logArea');
-let framesContainer = document.getElementById('frames');
-let programList = document.getElementById('programList');
-let memoryInputsContainer = document.getElementById('memoryInputs');
-
-
-function actualizarProgramas() {
-    programList.innerHTML = ''; 
-    programas.forEach(programa => {
-        let div = document.createElement('div');
-        div.classList.add('program');
-        div.textContent = `${programa.id} (Memoria: ${programa.memoria} pág.)`;
-        div.classList.add(programa.usada ? 'active' : 'inactive');
-        programList.appendChild(div);
-    });
-}
-
-
-function actualizarMemoria() {
-    framesContainer.innerHTML = ''; 
-    memoriaFisica.forEach((frame, index) => {
-        let div = document.createElement('div');
-        div.classList.add('frame');
-        div.textContent = frame.id ? `${frame.id} (Pág: ${frame.pagina})` : `Marco ${index + 1}`;
-        div.classList.add(frame.usada ? 'active' : 'inactive'); 
-        framesContainer.appendChild(div);
-    });
-}
-
-
-function crearControlesDeMemoria() {
-    memoryInputsContainer.innerHTML = ''; 
-    programas.forEach((programa, index) => {
-        let div = document.createElement('div');
-        div.classList.add('memory-control');
-        
-        let label = document.createElement('label');
-        label.textContent = `Memoria de ${programa.id}: `;
-        
-        let input = document.createElement('input');
-        input.type = 'number';
-        input.value = programa.memoria; 
-        input.min = 1; 
-        input.max = numMarcos; 
-        input.id = `memory-${index}`;
-        
-       
-        input.addEventListener('change', (event) => {
-            programa.memoria = parseInt(event.target.value);
-        });
-        
-        div.appendChild(label);
-        div.appendChild(input);
-        memoryInputsContainer.appendChild(div);
-    });
-}
-
-
-function accederAPagina(programa, pagina) {
-   
-    let paginaCargada = memoriaFisica.some(frame => frame.id === programa.id && frame.pagina === pagina);
-    
-    let estado = 'Sin fallo';  
-    let memoriaFisicaAsignada = '';
-
-    if (!paginaCargada) {
-       
-        programa.fallos++;
-        estado = 'Fallo de página';
-        logArea.innerHTML += `Fallo de página en el Programa ${programa.id} al intentar acceder a la página ${pagina}.<br>`;
-       
-        cargarPaginaEnMemoria(programa, pagina);
-        memoriaFisicaAsignada = `Marco ${pagina}`;
-    } else {
-        memoriaFisicaAsignada = `Marco ${pagina}`;
+function simulateNRU() {
+    const numFrames = parseInt(document.getElementById("numFrames").value);
+    const pageSequence = document.getElementById("pageSequence").value.split(',').map(Number);
+  
+    if (isNaN(numFrames) || numFrames <= 0 || pageSequence.length === 0) {
+      alert("Por favor, ingresa un número válido de marcos y una secuencia de páginas.");
+      return;
     }
-
-    
-    actualizarTablaFallos(programa, pagina, memoriaFisicaAsignada, estado);
-}
-
-
-function cargarPaginaEnMemoria(programa, pagina) {
-    
-    let marcoLibre = memoriaFisica.find(frame => frame.id === null);
-    
-    if (marcoLibre) {
-        
-        marcoLibre.id = programa.id;
-        marcoLibre.pagina = pagina;  
-        marcoLibre.usada = true;
-        logArea.innerHTML += `La página ${pagina} del Programa ${programa.id} se cargó en memoria.<br>`;
-        actualizarMemoria();
-    } else {
-       
-        logArea.innerHTML += `No hay espacio en memoria para cargar la página ${pagina} del Programa ${programa.id}.<br>`;
-        
-        algoritmoNRU();
+  
+    const frames = [];
+    const pageArrivalTimes = {}; // Tiempos de llegada de cada página
+    const pageWaitingTimes = {}; // Tiempos de espera
+    const pageBlockTimes = {}; // Tiempos de bloqueo
+    let currentTime = 0; // Tiempo actual global
+    let pageFaults = 0;
+  
+    const logOutput = document.getElementById("log-output");
+    const tableBody = document.getElementById("result-table-body");
+  
+    logOutput.innerHTML = "";
+    tableBody.innerHTML = "";
+  
+    const frameContainer = document.getElementById("frame-container");
+    frameContainer.innerHTML = "";
+  
+    // Inicializar marcos vacíos en el DOM
+    for (let i = 0; i < numFrames; i++) {
+      const frameDiv = document.createElement("div");
+      frameDiv.classList.add("frame");
+      frameDiv.id = `frame-${i}`;
+      frameContainer.appendChild(frameDiv);
     }
-}
-
-
-function actualizarTablaFallos(programa, pagina, memoriaFisicaAsignada, estado) {
-    const pageFaultsTable = document.getElementById('pageFaultsTable').getElementsByTagName('tbody')[0];
-    let row = document.createElement('tr');
-    
-    let cellProgram = document.createElement('td');
-    cellProgram.textContent = programa.id;
-    row.appendChild(cellProgram);
-    
-    let cellPage = document.createElement('td');
-    cellPage.textContent = pagina;
-    row.appendChild(cellPage);
-
-    let cellMemoriaFisica = document.createElement('td');
-    cellMemoriaFisica.textContent = memoriaFisicaAsignada;
-    row.appendChild(cellMemoriaFisica);
-
-    let cellEstado = document.createElement('td');
-    cellEstado.textContent = estado;
-    row.appendChild(cellEstado);
-    
-    pageFaultsTable.appendChild(row);
-}
-
-
-function algoritmoNRU() {
-    let programa = programas.find(p => !p.usada); 
-    if (!programa) return;
-
-   
-    let marcosLibres = memoriaFisica.filter(frame => frame.id === null).length;
-    if (marcosLibres >= programa.memoria) {
-       
-        for (let i = 0; i < programa.memoria; i++) {
-            let marcoLibre = memoriaFisica.find(frame => frame.id === null);
-            marcoLibre.id = programa.id;
-            marcoLibre.pagina = i + 1;  
-            marcoLibre.usada = true;
+  
+    pageSequence.forEach((page, index) => {
+      const logEntry = document.createElement("div");
+      const row = document.createElement("tr");
+  
+      // Verificar si la página está en memoria (HIT)
+      if (frames.includes(page)) {
+        logEntry.textContent = `Página ${page} encontrada (HIT).`;
+        highlightFrame(page, "hit");
+  
+        if (!pageWaitingTimes[page]) {
+          pageWaitingTimes[page] = currentTime - pageArrivalTimes[page]; // Calcular tiempo de espera
         }
-        programa.usada = true;
-        logArea.innerHTML += `Programa ${programa.id} cargado (${programa.memoria} páginas).<br>`;
-        actualizarProgramas();
-        actualizarMemoria();
-    } else {
-       
-        logArea.innerHTML += `No hay memoria suficiente para cargar el programa ${programa.id} (${programa.memoria} páginas).<br>`;
-        
-        algoritmoNRU(); 
-    }
-}
-
-
-function reiniciarSimulacion() {
-    programas = programas.map(p => ({ ...p, usada: false, fallos: 0 })); 
-    memoriaFisica = memoriaFisica.map(f => ({ ...f, id: null, pagina: null, usada: false })); 
-    logArea.innerHTML = ''; 
-    actualizarProgramas();
-    actualizarMemoria();
-}
-
-
-function iniciarSimulacion() {
-    reiniciarSimulacion(); l
-    intervalo = setInterval(() => {
-        if (programas.every(p => p.usada)) { 
-            clearInterval(intervalo);
-            logArea.innerHTML += 'Simulación completa.<br>';
+  
+        // Agregar fila a la tabla
+        row.innerHTML = `<td>Programa ${index + 1}</td>
+                         <td>${page}</td>
+                         <td>${frames.join(", ")}</td>
+                         <td>HIT</td>
+                         <td>${pageWaitingTimes[page] || 0}</td>
+                         <td>0</td>`;
+      } else {
+        // Página no encontrada (FAULT)
+        if (frames.length < numFrames) {
+          frames.push(page);
+          pageArrivalTimes[page] = currentTime; // Registrar el tiempo de llegada
+          logEntry.textContent = `Página ${page} no encontrada (FAULT). Cargada.`;
         } else {
-            algoritmoNRU(); 
+          const removedPage = frames.shift(); // Reemplazar la página más antigua
+          pageBlockTimes[removedPage] = currentTime - pageArrivalTimes[removedPage]; // Calcular tiempo de bloqueo
+          frames.push(page);
+          pageArrivalTimes[page] = currentTime; // Registrar tiempo de llegada
+          logEntry.textContent = `Página ${page} no encontrada (FAULT). Reemplazada página ${removedPage}.`;
+          replaceFrame(removedPage, page);
         }
-    }, 2000);
-}
-
-
-function pararSimulacion() {
-    clearInterval(intervalo); 
-    logArea.innerHTML += 'Simulación detenida.<br>';
-}
-
-
-document.getElementById('startSimulation').addEventListener('click', iniciarSimulacion);
-document.getElementById('stopSimulation').addEventListener('click', pararSimulacion);
-document.getElementById('resetSimulation').addEventListener('click', reiniciarSimulacion);
-
-
-actualizarProgramas();
-actualizarMemoria();
-crearControlesDeMemoria();
+        pageFaults++;
+  
+        // Agregar fila a la tabla
+        row.innerHTML = `<td>Programa ${index + 1}</td>
+                         <td>${page}</td>
+                         <td>${frames.join(", ")}</td>
+                         <td>FAULT</td>
+                         <td>${pageWaitingTimes[page] || 0}</td>
+                         <td>${pageBlockTimes[page] || 0}</td>`;
+      }
+  
+      logOutput.appendChild(logEntry);
+      tableBody.appendChild(row);
+      updateFrames(frames);
+      currentTime++; // Incrementar el tiempo global
+    });
+  
+    // Resumen de resultados en el cuadro de logs
+    const summary = document.createElement("div");
+    summary.innerHTML = `<strong>Faltas de página totales:</strong> ${pageFaults}<br>`;
+    
+    // Mostrar tiempos de llegada, espera y bloqueo en los logs
+    summary.innerHTML += `<h4>Resumen de Tiempos:</h4>`;
+  
+    // Tiempos de llegada
+    summary.innerHTML += `<strong>Tiempos de Llegada:</strong><br>`;
+    for (const page in pageArrivalTimes) {
+      summary.innerHTML += `Página ${page}: Llegó en el tiempo ${pageArrivalTimes[page]}<br>`;
+    }
+  
+    // Tiempos de espera
+    summary.innerHTML += `<strong>Tiempos de Espera:</strong><br>`;
+    for (const page in pageWaitingTimes) {
+      summary.innerHTML += `Página ${page}: Esperó ${pageWaitingTimes[page]} unidades de tiempo<br>`;
+    }
+  
+    // Tiempos de bloqueo
+    summary.innerHTML += `<strong>Tiempos de Bloqueo:</strong><br>`;
+    for (const page in pageBlockTimes) {
+      summary.innerHTML += `Página ${page}: Fue bloqueada por ${pageBlockTimes[page]} unidades de tiempo<br>`;
+    }
+  
+    logOutput.appendChild(summary);
+  }
+  
+  function updateFrames(frames) {
+    frames.forEach((page, index) => {
+      const frameDiv = document.getElementById(`frame-${index}`);
+      frameDiv.textContent = page;
+      frameDiv.classList.remove("replaced", "hit");
+    });
+  }
+  
+  function highlightFrame(page, className) {
+    const frameContainer = document.getElementById("frame-container").children;
+    for (let frame of frameContainer) {
+      if (parseInt(frame.textContent) === page) {
+        frame.classList.add(className);
+      }
+    }
+  }
+  
+  function replaceFrame(oldPage, newPage) {
+    const frameContainer = document.getElementById("frame-container").children;
+    for (let frame of frameContainer) {
+      if (parseInt(frame.textContent) === oldPage) {
+        frame.textContent = newPage;
+        frame.classList.add("replaced");
+        return;
+      }
+    }
+  }
+  

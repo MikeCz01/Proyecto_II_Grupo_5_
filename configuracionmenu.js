@@ -13,9 +13,13 @@ document.getElementById('configForm').addEventListener('submit', function (event
     }else if(algoritmo === 'fifo'){
         window.location.href = `vistaFIFO.html?procesos=${numProcesos}&marcos=${numMarcos}`;
   
-} else if (algoritmo === 'optimo') {
-    window.location.href = `simulador.Optimo.html?procesos=${numProcesos}&marcos=${numMarcos}`;  // Redirige al simulador óptimo
-} else {
+    } else if (algoritmo === 'optimo') {
+    window.location.href = `simulador.Optimo.html?procesos=${numProcesos}&marcos=${numMarcos}`; 
+    } else if (algoritmo === 'segunda-oportunidad') {
+    window.location.href = `SegundaOp.html?procesos=${numProcesos}&marcos=${numMarcos}`;  // Redirige al simulador óptimo
+    }else if(algoritmo === 'fifo'){
+        window.location.href = `vistaFIFO.html?procesos=${numProcesos}&marcos=${numMarcos}`;
+    } else {
     alert('Seleccione un algoritmo');
 }
 });

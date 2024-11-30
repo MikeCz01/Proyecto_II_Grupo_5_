@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simulación de Paginación FIFO</title>
-  <link rel="stylesheet" href="Style.css">
-
+  <link rel="stylesheet" href="styles2.css">
 </head>
 <body>
 
@@ -14,6 +13,7 @@
 
     <div class="input-container">
       <input type="text" id="pageSequence" placeholder="Secuencia de páginas (ej: 1,2,3,4,2,5)" />
+      <input type="number" id="numFrames" placeholder="Número de marcos" min="1" />
       <button onclick="simulateFIFO()">Simular</button>
     </div>
 
@@ -23,9 +23,25 @@
       <h3>Registro de eventos:</h3>
       <div id="log-output"></div>
     </div>
+
+    <!-- Tabla para mostrar los resultados -->
+    <table id="pageFaultsTable" class="table table-bordered mt-4">
+      <thead>
+        <tr>
+          <th>Programa</th>
+          <th>Página</th>
+          <th>Memoria Física</th>
+          <th>Estado</th>
+          <th>Tiempo de Espera</th>
+          <th>Tiempo de Bloqueo</th>
+        </tr>
+      </thead>
+      <tbody id="pageFaultsTableBody">
+        <!-- Los datos se agregarán dinámicamente aquí -->
+      </tbody>
+    </table>
   </div>
 
-  <script src="Fifo.js"></script>
-
+  <script src="FIFO.js"></script>
 </body>
 </html>
