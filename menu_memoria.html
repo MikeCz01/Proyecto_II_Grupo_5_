@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de Memoria</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-4">
+        <h1 class="text-center">Configuración de Memoria</h1>
+        <div class="card my-4">
+            <div class="card-header">Definir Tamaños de Memoria</div>
+            <div class="card-body">
+                <form id="memoryForm">
+                    <div class="mb-3">
+                        <label for="virtualMemory" class="form-label">Tamaño de Memoria Virtual</label>
+                        <input type="number" class="form-control" id="virtualMemory" placeholder="Ingresa el tamaño en MB" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="physicalMemory" class="form-label">Tamaño de Memoria Física (Marcos)</label>
+                        <input type="number" class="form-control" id="physicalMemory" placeholder="Ingresa el número de marcos" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+
+        <h2 class="my-4">Configuración Actual</h2>
+        <ul class="list-group" id="memorySettings">
+            <li class="list-group-item">Memoria Virtual: <span id="displayVirtualMemory">No configurada</span></li>
+            <li class="list-group-item">Memoria Física (Marcos): <span id="displayPhysicalMemory">No configurada</span></li>
+        </ul>
+
+        <a href="menu_ejecucion.html" class="btn btn-secondary mt-4">Volver a Lista de Ejecución</a>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const memoryForm = document.getElementById('memoryForm');
+        const displayVirtualMemory = document.getElementById('displayVirtualMemory');
+        const displayPhysicalMemory = document.getElementById('displayPhysicalMemory');
+
+        // Cargar configuraciones desde localStorage
+        const memorySettings = JSON.parse(localStorage.getItem('memorySettings')) || { virtualMemory: null, physicalMemory: null };
+        displayVirtualMemory.textContent = memorySettings.virtualMemory ? `${memorySettings.virtualMemory} MB` : "No configurada";
+        displayPhysicalMemory.textContent = memorySettings.physicalMemory ? `${memorySettings.physicalMemory} Marcos` : "No configurada";
+
+        // Guardar configuraciones
+        memoryForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const virtualMemory = document.getElementById('virtualMemory').value;
+            const physicalMemory = document.getElementById('physicalMemory').value;
+
+            // Actualizar configuración
+            const updatedSettings = { virtualMemory, physicalMemory };
+            localStorage.setItem('memorySettings', JSON.stringify(updatedSettings));
+
+            // Mostrar configuraciones actualizadas
+            displayVirtualMemory.textContent = `${virtualMemory} MB`;
+            displayPhysicalMemory.textContent = `${physicalMemory} Marcos`;
+
+            // Limpiar formulario
+            memoryForm.reset();
+        });
+    </script>
+</body>
+</html>
